@@ -1,0 +1,1 @@
+FROM prodrigestivill/postgres-backup-local
