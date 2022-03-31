@@ -25,7 +25,7 @@ export PGADMIN_IMAGE=warung-pintar-pgadmin
 export PGADMIN_IMAGE_TAG=development
 export PGADMIN_CONTAINER=warung-pintar-pgadmin
 export PGADMIN_HOST=warung-pintar-pgadmin.service
-export PGADMIN_EMAIL=admin@warung-pintargroup.co.id
+export PGADMIN_EMAIL=admin@warungpintar.co.id
 export PGADMIN_PASSWORD=inisecret
 docker build -t "$PGADMIN_IMAGE:$PGADMIN_IMAGE_TAG" -f ./manifest-docker/Dockerfile.pgadmin ./manifest-docker
 

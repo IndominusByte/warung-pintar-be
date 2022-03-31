@@ -1,2 +1,2 @@
-run:
+dev:
 	bash ./scripts/local.sh
