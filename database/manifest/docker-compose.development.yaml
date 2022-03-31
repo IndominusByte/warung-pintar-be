@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  warung-pintar-postgresql:
+  warungpintar-postgresql-development:
     container_name: ${POSTGRESQL_CONTAINER}
     hostname: ${POSTGRESQL_HOST}
     image: "${POSTGRESQL_IMAGE}:${POSTGRESQL_IMAGE_TAG}"
@@ -11,9 +11,9 @@ services:
       POSTGRES_USER: ${POSTGRESQL_USER}
       POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
     networks:
-      - warung-pintar-environment
+      - warungpintar-environment-development
 
-  warung-pintar-redis:
+  warungpintar-redis-development:
     container_name: ${REDIS_CONTAINER}
     hostname: ${REDIS_HOST}
     image: "${REDIS_IMAGE}:${REDIS_IMAGE_TAG}"
@@ -21,9 +21,9 @@ services:
     sysctls:
       - net.core.somaxconn=511
     networks:
-      - warung-pintar-environment
+      - warungpintar-environment-development
 
-  warung-pintar-pgadmin:
+  warungpintar-pgadmin-development:
     container_name: ${PGADMIN_CONTAINER}
     hostname: ${PGADMIN_HOST}
     image: "${PGADMIN_IMAGE}:${PGADMIN_IMAGE_TAG}"
@@ -34,9 +34,9 @@ services:
     ports:
       - "5430:80"
     networks:
-      - warung-pintar-environment
+      - warungpintar-environment-development
 
-  warung-pintar-pgbackups:
+  warungpintar-pgbackups-development:
     container_name: ${PGBACKUPS_CONTAINER}
     hostname: ${PGBACKUPS_HOST}
     image: "${PGBACKUPS_IMAGE}:${PGBACKUPS_IMAGE_TAG}"
@@ -53,11 +53,11 @@ services:
       BACKUP_KEEP_MONTHS: 6
       HEALTHCHECK_PORT: 80
     networks:
-      - warung-pintar-environment
+      - warungpintar-environment-development
     volumes:
       - ../backups:/backups
 
 networks:
-  warung-pintar-environment:
+  warungpintar-environment-development:
     external: true
-    name: warung-pintar-environment
+    name: warungpintar-environment-development

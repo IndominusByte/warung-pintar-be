@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  warungpintar-db-migration-development:
+    container_name: ${DB_MIGRATION_CONTAINER}
+    hostname: ${DB_MIGRATION_HOST}
+    image: "${DB_MIGRATION_IMAGE}:${DB_MIGRATION_IMAGE_TAG}"
+    environment:
+      BACKEND_STAGE: ${BACKEND_STAGE}
+    networks:
+      - warungpintar-environment-development
+
+networks:
+  warungpintar-environment-development:
+    external: true
+    name: warungpintar-environment-development

@@ -1,8 +1,8 @@
 {
   "driver": "postgres",
   "encryption_key": "2B4B6250655368566D59703373367639",
-  "pg_talk_user": "2UGZTGMlu1ZtzH6sxIOkL3F9tSRAkQ8sY0a5MLGYuRQ",
+  "pg_talk_user": "aAg6mIDIBU_otdQ26O8KFEx3fOHnqJKBwOR9FNE8Kg",
   "pg_talk_password": "0MuAqjkt-zo9OaZIQYK6Va9tBGzhc49iUw",
-  "master_dsn_no_cred": "postgres://%s:%s@warung-pintar-postgresql.service:5432/warung-pintar?sslmode=disable",
+  "master_dsn_no_cred": "postgres://%s:%s@warungpintar-postgresql.service:5432/warungpintar?sslmode=disable",
   "file_migration": "file://db/migrations"
 }
