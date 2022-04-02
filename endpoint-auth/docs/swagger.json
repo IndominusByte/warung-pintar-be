@@ -152,7 +152,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schema/AuthResendEmail"
+                "$ref": "#/components/schema/AuthEmailOnly"
               }
             }
           },
@@ -538,6 +538,473 @@
           }
         ]
       }
+    },
+    "/auth/password-reset/send": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Send Password Reset",
+        "description": "send link reset password to email user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/AuthEmailOnly"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Request Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 200,
+                  "status": true,
+                  "message": "Request Success.",
+                  "detail_message": {
+                    "_app": "We have sent a password reset link to your email."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Account not activated or 5 minute delay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 400,
+                  "status": false,
+                  "message": "Validation Failed.",
+                  "detail_message": {
+                    "_app": "string"
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 404,
+                  "status": false,
+                  "message": "Resource Not Found.",
+                  "detail_message": {
+                    "_app": "We can't find a user with that e-mail address."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 422,
+                  "status": false,
+                  "message": "Unprocessable Entity.",
+                  "detail_message": {
+                    "_body": "Invalid input type."
+                  },
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/password-reset/{token}": {
+      "put": {
+        "tags": ["auth"],
+        "summary": "Reset Password Via Email",
+        "description": "reset password",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "token",
+              "type": "string"
+            },
+            "name": "token",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/AuthResetPassword"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Request Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 200,
+                  "status": true,
+                  "message": "Request Success.",
+                  "detail_message": {
+                    "_app": "Successfully reset your password."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation Failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 400,
+                  "status": false,
+                  "message": "Validation Failed.",
+                  "detail_message": {
+                    "_app": "The password reset token is invalid."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Token or Email not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 404,
+                  "status": false,
+                  "message": "Resource Not Found.",
+                  "detail_message": {
+                    "_app": "string"
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 422,
+                  "status": false,
+                  "message": "Unprocessable Entity.",
+                  "detail_message": {
+                    "_body": "Invalid input type."
+                  },
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/update-password": {
+      "put": {
+        "tags": ["auth"],
+        "summary": "Update Password",
+        "description": "update password user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/AuthUpdatePassword"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Request Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 200,
+                  "status": true,
+                  "message": "Request Success.",
+                  "detail_message": {
+                    "_app": "Success update your password."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation Failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 400,
+                  "status": false,
+                  "message": "Validation Failed.",
+                  "detail_message": {
+                    "_app": "Password does not match with our records."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 422,
+                  "status": false,
+                  "message": "Unprocessable Entity.",
+                  "detail_message": {
+                    "_body": "Invalid input type."
+                  },
+                  "data": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/auth/update-avatar": {
+      "put": {
+        "tags": ["auth"],
+        "summary": "Update Avatar",
+        "description": "",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schema/AuthUpdateAvatar"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Request Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 200,
+                  "status": true,
+                  "message": "Request Success.",
+                  "detail_message": {
+                    "_app": "Success update avatar."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 422,
+                  "status": false,
+                  "message": "Unprocessable Entity.",
+                  "detail_message": {
+                    "_body": "Invalid input type."
+                  },
+                  "data": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/auth/update-account": {
+      "put": {
+        "tags": ["auth"],
+        "summary": "Update Account",
+        "description": "",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/AuthUpdateAccount"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Request Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 200,
+                  "status": true,
+                  "message": "Request Success.",
+                  "detail_message": {
+                    "_app": "Success updated your account."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation Failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 400,
+                  "status": false,
+                  "message": "Validation Failed.",
+                  "detail_message": {
+                    "_app": "The phone has already been taken."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 422,
+                  "status": false,
+                  "message": "Unprocessable Entity.",
+                  "detail_message": {
+                    "_body": "Invalid input type."
+                  },
+                  "data": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/auth/": {
+      "get": {
+        "tags": ["auth"],
+        "summary": "My Data",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Request Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 200,
+                  "status": true,
+                  "message": "Request Success.",
+                  "detail_message": null,
+                  "results": {
+                    "id": 1,
+                    "fullname": "string",
+                    "email": "user@example.com",
+                    "password": "",
+                    "phone": "string",
+                    "address": "string",
+                    "role": "admin",
+                    "avatar": "string",
+                    "created_at": "2022-02-09T20:37:34.939487Z",
+                    "updated_at": "2022-02-09T20:37:34.939487Z"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -607,8 +1074,8 @@
           }
         }
       },
-      "AuthResendEmail": {
-        "title": "AuthResendEmail",
+      "AuthEmailOnly": {
+        "title": "AuthEmailOnly",
         "required": ["email"],
         "type": "object",
         "properties": {
@@ -652,6 +1119,93 @@
             "minLength": 6,
             "type": "string"
           }
+        }
+      },
+      "AuthResetPassword": {
+        "title": "AuthResetPassword",
+        "required": ["email", "password", "confirm_password"],
+        "type": "object",
+        "properties": {
+          "email": {
+            "title": "Email",
+            "maxLength": 100,
+            "minLength": 3,
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "title": "Password",
+            "maxLength": 100,
+            "minLength": 6,
+            "type": "string"
+          },
+          "confirm_password": {
+            "title": "Confirm Password",
+            "maxLength": 100,
+            "minLength": 6,
+            "type": "string"
+          }
+        }
+      },
+      "AuthUpdatePassword": {
+        "title": "AuthUpdatePassword",
+        "required": ["old_password", "password", "confirm_password"],
+        "type": "object",
+        "properties": {
+          "old_password": {
+            "title": "Old Password",
+            "maxLength": 100,
+            "minLength": 6,
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "maxLength": 100,
+            "minLength": 6,
+            "type": "string"
+          },
+          "confirm_password": {
+            "title": "Confirm Password",
+            "maxLength": 100,
+            "minLength": 6,
+            "type": "string"
+          }
+        }
+      },
+      "AuthUpdateAvatar": {
+        "title": "AuthUpdateAvatar",
+        "type": "object",
+        "required": ["avatar"],
+        "properties": {
+          "avatar": {
+            "title": "avatar",
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "AuthUpdateAccount": {
+        "title": "AuthUpdateAccount",
+        "type": "object",
+        "required": ["fullname", "phone", "address"],
+        "properties": {
+          "fullname": {
+            "title": "fullname",
+            "minLength": 3,
+            "maxLength": 100,
+            "type": "string"
+          },
+          "phone": {
+            "title": "phone",
+            "minLength": 3,
+            "maxLength": 20,
+            "type": "string"
+          },
+          "address": {
+            "title": "address",
+            "minLength": 5,
+            "type": "string"
+          },
         }
       }
     }

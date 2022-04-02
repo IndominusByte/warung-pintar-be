@@ -3,6 +3,7 @@ package endpoint_http
 import (
 	"context"
 	"encoding/json"
+	"mime/multipart"
 	"net/http"
 
 	"github.com/IndominusByte/warung-pintar-be/endpoint-auth/internal/config"
@@ -26,11 +27,43 @@ type authUsecaseIface interface {
 	AccessRevoke(ctx context.Context, rw http.ResponseWriter, redisCli *redis.Pool, cfg *config.Config)
 	RefreshRevoke(ctx context.Context, rw http.ResponseWriter, redisCli *redis.Pool, cfg *config.Config)
 	PasswordResetSend(ctx context.Context, rw http.ResponseWriter, payload *authentity.JsonEmailSchema, m *mail.Mail)
+	PasswordReset(ctx context.Context, rw http.ResponseWriter, token string, payload *authentity.JsonPasswordResetSchema)
+	UpdatePassword(ctx context.Context, rw http.ResponseWriter, payload *authentity.JsonUpdatePasswordSchema)
+	UpdateAvatar(ctx context.Context, rw http.ResponseWriter, file *multipart.Form)
+	UpdateAccount(ctx context.Context, rw http.ResponseWriter, payload *authentity.JsonUpdateAccountSchema)
+	GetUser(ctx context.Context, rw http.ResponseWriter)
 }
 
 func AddAuth(r *chi.Mux, uc authUsecaseIface, redisCli *redis.Pool, cfg *config.Config, m *mail.Mail) {
 	r.Route("/auth", func(r chi.Router) {
 		// protected route
+		r.Group(func(r chi.Router) {
+			r.Use(func(next http.Handler) http.Handler {
+				return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+					if err := auth.ValidateJWT(r.Context(), redisCli, "jwtFreshRequired"); err != nil {
+						response.WriteJSONResponse(rw, 401, nil, map[string]interface{}{
+							constant.Header: err.Error(),
+						})
+						return
+					}
+					// Token is authenticated, pass it through
+					next.ServeHTTP(rw, r)
+				})
+			})
+			r.Put("/update-password", func(rw http.ResponseWriter, r *http.Request) {
+				var p authentity.JsonUpdatePasswordSchema
+
+				if err := json.NewDecoder(r.Body).Decode(&p); err != nil {
+					response.WriteJSONResponse(rw, 422, nil, map[string]interface{}{
+						constant.Body: constant.FailedParseBody,
+					})
+					return
+				}
+
+				uc.UpdatePassword(r.Context(), rw, &p)
+			})
+		})
+
 		r.Group(func(r chi.Router) {
 			r.Use(func(next http.Handler) http.Handler {
 				return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
@@ -43,6 +76,31 @@ func AddAuth(r *chi.Mux, uc authUsecaseIface, redisCli *redis.Pool, cfg *config.
 					// Token is authenticated, pass it through
 					next.ServeHTTP(rw, r)
 				})
+			})
+			r.Get("/", func(rw http.ResponseWriter, r *http.Request) {
+				uc.GetUser(r.Context(), rw)
+			})
+			r.Put("/update-avatar", func(rw http.ResponseWriter, r *http.Request) {
+				if err := r.ParseMultipartForm(32 << 20); err != nil {
+					response.WriteJSONResponse(rw, 422, nil, map[string]interface{}{
+						"_body": constant.FailedParseBody,
+					})
+					return
+				}
+
+				uc.UpdateAvatar(r.Context(), rw, r.MultipartForm)
+			})
+			r.Put("/update-account", func(rw http.ResponseWriter, r *http.Request) {
+				var p authentity.JsonUpdateAccountSchema
+
+				if err := json.NewDecoder(r.Body).Decode(&p); err != nil {
+					response.WriteJSONResponse(rw, 422, nil, map[string]interface{}{
+						constant.Body: constant.FailedParseBody,
+					})
+					return
+				}
+
+				uc.UpdateAccount(r.Context(), rw, &p)
 			})
 			r.Post("/fresh-token", func(rw http.ResponseWriter, r *http.Request) {
 				var p authentity.JsonPasswordOnlySchema
@@ -134,6 +192,20 @@ func AddAuth(r *chi.Mux, uc authUsecaseIface, redisCli *redis.Pool, cfg *config.
 			}
 
 			uc.PasswordResetSend(r.Context(), rw, &p, m)
+		})
+		r.Put("/password-reset/{token}", func(rw http.ResponseWriter, r *http.Request) {
+			token, _ := parser.ParsePathToStr("/auth/password-reset/(.*)", r.URL.Path)
+
+			var p authentity.JsonPasswordResetSchema
+
+			if err := json.NewDecoder(r.Body).Decode(&p); err != nil {
+				response.WriteJSONResponse(rw, 422, nil, map[string]interface{}{
+					constant.Body: constant.FailedParseBody,
+				})
+				return
+			}
+
+			uc.PasswordReset(r.Context(), rw, token, &p)
 		})
 	})
 }
