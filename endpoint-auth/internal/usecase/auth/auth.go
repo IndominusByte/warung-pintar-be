@@ -58,7 +58,7 @@ func (uc *AuthUsecase) Register(ctx context.Context, rw http.ResponseWriter,
 			[]string{payload.Email},
 			"Activated User",
 			"dont-reply@example.com",
-			"templates/email/EmailConfirm.html",
+			"/app/templates/email/EmailConfirm.html",
 			struct{ Link string }{Link: fmt.Sprintf("http://localhost:3000/auth/confirm/%s", confirm_id)},
 		)
 	}, 20)
@@ -137,7 +137,7 @@ func (uc *AuthUsecase) ResendEmail(ctx context.Context, rw http.ResponseWriter,
 			[]string{user.Email},
 			"Activated User",
 			"dont-reply@example.com",
-			"templates/email/EmailConfirm.html",
+			"/app/templates/email/EmailConfirm.html",
 			struct{ Link string }{Link: fmt.Sprintf("http://localhost:3000/auth/confirm/%s", confirm.Id)},
 		)
 	}, 20)
@@ -326,7 +326,7 @@ func (uc *AuthUsecase) PasswordResetSend(ctx context.Context,
 			[]string{user.Email},
 			"Reset Password",
 			"dont-reply@example.com",
-			"templates/email/EmailResetPassword.html",
+			"/app/templates/email/EmailResetPassword.html",
 			struct{ Link string }{Link: fmt.Sprintf("http://localhost:3000/auth/password-reset/%s", resetId)},
 		)
 	}, 20)

@@ -8,6 +8,7 @@ require (
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-chi/cors v1.2.0
 	github.com/go-chi/jwtauth v1.2.0
+	github.com/go-playground/assert/v2 v2.0.1
 	github.com/gomodule/redigo v1.8.8
 	github.com/jmoiron/sqlx v1.3.4
 	github.com/lib/pq v1.10.4
