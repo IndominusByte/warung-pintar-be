@@ -25,6 +25,7 @@ type authUsecaseIface interface {
 	RefreshToken(ctx context.Context, rw http.ResponseWriter, cfg *config.Config)
 	AccessRevoke(ctx context.Context, rw http.ResponseWriter, redisCli *redis.Pool, cfg *config.Config)
 	RefreshRevoke(ctx context.Context, rw http.ResponseWriter, redisCli *redis.Pool, cfg *config.Config)
+	PasswordResetSend(ctx context.Context, rw http.ResponseWriter, payload *authentity.JsonEmailSchema, m *mail.Mail)
 }
 
 func AddAuth(r *chi.Mux, uc authUsecaseIface, redisCli *redis.Pool, cfg *config.Config, m *mail.Mail) {
@@ -121,6 +122,18 @@ func AddAuth(r *chi.Mux, uc authUsecaseIface, redisCli *redis.Pool, cfg *config.
 			}
 
 			uc.Login(r.Context(), rw, &p, cfg)
+		})
+		r.Post("/password-reset/send", func(rw http.ResponseWriter, r *http.Request) {
+			var p authentity.JsonEmailSchema
+
+			if err := json.NewDecoder(r.Body).Decode(&p); err != nil {
+				response.WriteJSONResponse(rw, 422, nil, map[string]interface{}{
+					constant.Body: constant.FailedParseBody,
+				})
+				return
+			}
+
+			uc.PasswordResetSend(r.Context(), rw, &p, m)
 		})
 	})
 }

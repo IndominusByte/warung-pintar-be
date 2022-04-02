@@ -265,3 +265,29 @@ func (uc *AuthUsecase) RefreshRevoke(ctx context.Context, rw http.ResponseWriter
 		constant.App: "An refresh token has revoked.",
 	})
 }
+
+func (uc *AuthUsecase) PasswordResetSend(ctx context.Context,
+	rw http.ResponseWriter, payload *authentity.JsonEmailSchema, m *mail.Mail) {
+
+	if err := validation.StructValidate(payload); err != nil {
+		response.WriteJSONResponse(rw, 422, nil, err)
+		return
+	}
+
+	user, err := uc.authRepo.GetUserByEmail(ctx, payload.Email)
+	if err != nil {
+		response.WriteJSONResponse(rw, 400, nil, map[string]interface{}{
+			constant.App: "We can't find a user with that e-mail address.",
+		})
+		return
+	}
+
+	confirm, _ := uc.authRepo.GetUserConfirmByUserId(ctx, user.Id)
+
+	if !confirm.Activated {
+		response.WriteJSONResponse(rw, 400, nil, map[string]interface{}{
+			constant.App: "Please activate your account first.",
+		})
+		return
+	}
+}
