@@ -26,3 +26,8 @@ jwt:
   private_key: "/app/enc/private.pem"
   access_expired: 15m
   refresh_expired: 24h
+
+mail:
+  server: "smtp.gmail.com"
+  port: 465
+  username: "warpinbe@gmail.com"

@@ -13,6 +13,7 @@ type gsmData struct {
 	SecretKey      string `json:"secret_key"`
 	PgTalkUser     string `json:"pg_talk_user"`
 	PgTalkPassword string `json:"pg_talk_password"`
+	MailPassword   string `json:"mail_password"`
 }
 
 func (cfg *Config) loadFromGsm() error {
@@ -47,6 +48,12 @@ func (cfg *Config) loadFromGsm() error {
 		return pgtalkpassworderr
 	}
 
+	mailpassword, mailpassworderr := cdn.Decrypt(data.MailPassword)
+	if mailpassworderr != nil {
+		return mailpassworderr
+	}
+
+	cfg.Mail.Password = string(mailpassword)
 	cfg.JWT.SecretKey = string(secretkey)
 	cfg.Database.MasterDsn = fmt.Sprintf(cfg.Database.MasterDsnNoCred, pgtalkuser, pgtalkpassword)
 	cfg.Database.FollowerDsn = fmt.Sprintf(cfg.Database.FollowerDsnNoCred, pgtalkuser, pgtalkpassword)

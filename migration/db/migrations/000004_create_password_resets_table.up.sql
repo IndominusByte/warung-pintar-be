@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS account.password_resets(
   id SERIAL PRIMARY KEY,
   email VARCHAR(100) UNIQUE NOT NULL,
-  resend_expired INT,
+  resend_expired TIMESTAMP WITHOUT TIME ZONE,
   created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 

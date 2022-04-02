@@ -10,6 +10,7 @@ import (
 	authusecase "github.com/IndominusByte/warung-pintar-be/endpoint-auth/internal/usecase/auth"
 	"github.com/creent-production/cdk-go/auth"
 	"github.com/creent-production/cdk-go/filestatic"
+	"github.com/creent-production/cdk-go/mail"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
@@ -58,13 +59,21 @@ func (s *Server) MountHandlers() error {
 	fileServer := http.FileServer(filestatic.FileSystem{Static: http.Dir("static")})
 	s.Router.Handle("/static/*", http.StripPrefix(strings.TrimRight("/static/", "/"), fileServer))
 
+	// setup email
+	m := mail.Mail{
+		Server:   s.cfg.Mail.Server,
+		Port:     s.cfg.Mail.Port,
+		Username: s.cfg.Mail.Username,
+		Password: s.cfg.Mail.Password,
+	}
+
 	// you can insert your behaviors here
 	authRepo, err := authrepo.New(s.db)
 	if err != nil {
 		return err
 	}
 	authUsecase := authusecase.NewAuthUsecase(authRepo)
-	endpoint_http.AddAuth(s.Router, authUsecase, s.redisCli, s.cfg)
+	endpoint_http.AddAuth(s.Router, authUsecase, s.redisCli, s.cfg, &m)
 
 	return nil
 }

@@ -43,3 +43,10 @@ type Redis struct {
 	Timeout       string `yaml:"timeout"`
 	Address       string `yaml:"address"`
 }
+
+type Mail struct {
+	Server   string `yaml:"server"`
+	Port     int    `yaml:"port"`
+	Username string `yaml:"username"`
+	Password string
+}

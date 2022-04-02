@@ -13,6 +13,7 @@ type Config struct {
 	Database Database `yaml:"database"`
 	Redis    Redis    `yaml:"redis"`
 	JWT      JWT      `yaml:"jwt"`
+	Mail     Mail     `yaml:"mail"`
 }
 
 func New() (*Config, error) {
