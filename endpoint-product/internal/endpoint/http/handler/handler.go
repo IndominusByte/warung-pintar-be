@@ -8,7 +8,9 @@ import (
 	endpoint_http "github.com/IndominusByte/warung-pintar-be/endpoint-product/internal/endpoint/http"
 	authrepo "github.com/IndominusByte/warung-pintar-be/endpoint-product/internal/repo/auth"
 	categoriesrepo "github.com/IndominusByte/warung-pintar-be/endpoint-product/internal/repo/categories"
+	productsrepo "github.com/IndominusByte/warung-pintar-be/endpoint-product/internal/repo/products"
 	categoriesusecase "github.com/IndominusByte/warung-pintar-be/endpoint-product/internal/usecase/categories"
+	productsusecase "github.com/IndominusByte/warung-pintar-be/endpoint-product/internal/usecase/products"
 	"github.com/creent-production/cdk-go/auth"
 	"github.com/creent-production/cdk-go/filestatic"
 	"github.com/go-chi/chi/v5"
@@ -71,6 +73,14 @@ func (s *Server) MountHandlers() error {
 	}
 	categoriesUsecase := categoriesusecase.NewCategoriesUsecase(categoriesRepo, authRepo)
 	endpoint_http.AddCategories(s.Router, categoriesUsecase, s.redisCli)
+
+	productsRepo, err := productsrepo.New(s.db)
+	if err != nil {
+		return err
+	}
+
+	productsUsecase := productsusecase.NewProductsUsecase(productsRepo, categoriesRepo, authRepo)
+	endpoint_http.AddProducts(s.Router, productsUsecase, s.redisCli)
 
 	return nil
 }

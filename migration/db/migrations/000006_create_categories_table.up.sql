@@ -5,4 +5,4 @@ CREATE TABLE IF NOT EXISTS product.categories(
   updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX IF NOT EXISTS idx_account_product_categories_name ON product.categories(name);
+CREATE INDEX IF NOT EXISTS idx_product_categories_name ON product.categories(name);
