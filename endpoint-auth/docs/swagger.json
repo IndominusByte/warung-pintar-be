@@ -93,10 +93,8 @@
                   "message": "Request Success.",
                   "detail_message": null,
                   "results": {
-                    "_app": {
-                      "access_token": "string",
-                      "refresh_token": "string"
-                    }
+                    "access_token": "string",
+                    "refresh_token": "string"
                   }
                 }
               }
@@ -267,10 +265,8 @@
                   "message": "Request Success.",
                   "detail_message": null,
                   "results": {
-                    "_app": {
-                      "access_token": "string",
-                      "refresh_token": "string"
-                    }
+                    "access_token": "string",
+                    "refresh_token": "string"
                   }
                 }
               }

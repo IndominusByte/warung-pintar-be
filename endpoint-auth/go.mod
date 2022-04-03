@@ -8,10 +8,10 @@ require (
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-chi/cors v1.2.0
 	github.com/go-chi/jwtauth v1.2.0
-	github.com/go-playground/assert/v2 v2.0.1
 	github.com/gomodule/redigo v1.8.8
 	github.com/jmoiron/sqlx v1.3.4
 	github.com/lib/pq v1.10.4
+	github.com/stretchr/testify v1.7.0
 	github.com/swaggo/http-swagger v1.2.5
 	github.com/swaggo/swag v1.8.1
 	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97
@@ -24,6 +24,7 @@ require (
 	github.com/PuerkitoBio/purell v1.1.1 // indirect
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
 	github.com/corona10/goimagehash v1.0.3 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.0-20210816181553-5444fa50b93d // indirect
 	github.com/disintegration/imaging v1.6.2 // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
@@ -47,6 +48,7 @@ require (
 	github.com/mailru/easyjson v0.7.6 // indirect
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rwcarlsen/goexif v0.0.0-20190401172101-9e8deecbddbd // indirect
 	github.com/swaggo/files v0.0.0-20210815190702-a29dd2bc99b2 // indirect
 	golang.org/x/image v0.0.0-20211028202545-6944b10bf410 // indirect
@@ -56,4 +58,5 @@ require (
 	golang.org/x/tools v0.1.7 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df // indirect
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )

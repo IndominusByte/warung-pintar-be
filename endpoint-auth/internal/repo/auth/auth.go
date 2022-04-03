@@ -27,6 +27,8 @@ var execs = map[string]string{
 	"setUserConfirmActivatedTrue":        `UPDATE account.confirmation_users SET activated=true WHERE id = :id`,
 	"generateUserConfirmResendExpired":   `UPDATE account.confirmation_users SET resend_expired=(CURRENT_TIMESTAMP + INTERVAL '5 minute') WHERE id = :id`,
 	"generatePasswordResetResendExpired": `UPDATE account.password_resets SET resend_expired=(CURRENT_TIMESTAMP + INTERVAL '5 minute') WHERE id = :id`,
+	"resetUserConfirmResendExpired":      `UPDATE account.confirmation_users SET resend_expired=(CURRENT_TIMESTAMP - INTERVAL '10 minute') WHERE id = :id`,
+	"resetPasswordResetResendExpired":    `UPDATE account.password_resets SET resend_expired=(CURRENT_TIMESTAMP - INTERVAL '10 minute') WHERE id = :id`,
 	"deleteUser":                         `DELETE FROM account.users WHERE id = :id`,
 	"deleteUserConfirm":                  `DELETE FROM account.confirmation_users WHERE id = :id`,
 	"deletePasswordReset":                `DELETE FROM account.password_resets WHERE id = :id`,
@@ -237,6 +239,24 @@ func (r *RepoAuth) GenerateUserConfirmResendExpired(ctx context.Context, id stri
 
 func (r *RepoAuth) GeneratePasswordResetResendExpired(ctx context.Context, id string) error {
 	stmt, _ := r.db.PrepareNamedContext(ctx, r.execs["generatePasswordResetResendExpired"])
+	_, err := stmt.ExecContext(ctx, authentity.PasswordReset{Id: id})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *RepoAuth) ResetUserConfirmResendExpired(ctx context.Context, id string) error {
+	stmt, _ := r.db.PrepareNamedContext(ctx, r.execs["resetUserConfirmResendExpired"])
+	_, err := stmt.ExecContext(ctx, authentity.UserConfirm{Id: id})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *RepoAuth) ResetPasswordResetResendExpired(ctx context.Context, id string) error {
+	stmt, _ := r.db.PrepareNamedContext(ctx, r.execs["resetPasswordResetResendExpired"])
 	_, err := stmt.ExecContext(ctx, authentity.PasswordReset{Id: id})
 	if err != nil {
 		return err
