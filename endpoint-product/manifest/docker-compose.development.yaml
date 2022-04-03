@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  warungpintar-go-product-development:
+    container_name: ${BACKEND_CONTAINER}
+    hostname: ${BACKEND_HOST}
+    image: "${BACKEND_IMAGE}:${BACKEND_IMAGE_TAG}"
+    restart: always
+    environment:
+      BACKEND_STAGE: ${BACKEND_STAGE}
+    ports:
+      - "3001:3001"
+    networks:
+      - warungpintar-environment-development
+    volumes:
+      - /app/bin
+      - ../:/app
+
+networks:
+  warungpintar-environment-development:
+    external: true
+    name: warungpintar-environment-development

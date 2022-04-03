@@ -982,7 +982,6 @@
                     "id": 1,
                     "fullname": "string",
                     "email": "user@example.com",
-                    "password": "",
                     "phone": "string",
                     "address": "string",
                     "role": "admin",

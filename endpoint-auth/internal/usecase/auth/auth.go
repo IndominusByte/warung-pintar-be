@@ -504,6 +504,5 @@ func (uc *AuthUsecase) GetUser(ctx context.Context, rw http.ResponseWriter) {
 		return
 	}
 
-	user.Password = ""
 	response.WriteJSONResponse(rw, 200, user, nil)
 }

@@ -47,7 +47,7 @@ type User struct {
 	Id        int         `json:"id" db:"id"`
 	Fullname  null.String `json:"fullname" db:"fullname"`
 	Email     string      `json:"email" db:"email"`
-	Password  string      `json:"password" db:"password"`
+	Password  string      `json:"-" db:"password"`
 	Phone     null.String `json:"phone" db:"phone"`
 	Address   null.String `json:"address" db:"address"`
 	Role      string      `json:"role" db:"role"`
