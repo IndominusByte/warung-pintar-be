@@ -1,0 +1,28 @@
+server:
+  http:
+    address: ":3002"
+    read_timeout: 10s
+    write_timeout: 10s
+
+database:
+  driver: "postgres"
+  max_open_conns: 100
+  max_idle_conns: 10
+  conn_max_lifetime: 30s
+  conn_max_idletime: 5s
+  master_dsn_no_cred: "postgres://%s:%s@warungpintar-postgresql.service:5432/warungpintar?sslmode=disable"
+  follower_dsn_no_cred: "user=%s password=%s dbname=warungpintar host=warungpintar-postgresql.service port=5432 sslmode=disable"
+
+redis:
+  engine: "redigo"
+  max_active_conn: 100
+  max_idle_conn: 10
+  timeout: 240s
+  address: "warungpintar-redis.service:6379"
+
+jwt:
+  algorithm: "RS256"
+  public_key: "/app/enc/public.pem"
+  private_key: "/app/enc/private.pem"
+  access_expired: 15m
+  refresh_expired: 24h

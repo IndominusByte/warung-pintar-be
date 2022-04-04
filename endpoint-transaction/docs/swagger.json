@@ -1,0 +1,54 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Transaction Restful API",
+    "description": "Documentation about transaction",
+    "version": "1.0.0"
+  },
+  "paths": {
+
+  },
+  "components": {
+    "securitySchemes": {
+      "AccessToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "RefreshToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schema": {
+      "ExampleResponse": {
+        "title": "ExampleResponse",
+        "type": "object",
+        "required": ["status_code", "status", "message"],
+        "properties": {
+          "status_code": {
+            "title": "status_code",
+            "type": "integer"
+          },
+          "status": {
+            "title": "status",
+            "type": "boolean"
+          },
+          "message": {
+            "title": "message",
+            "type": "string"
+          },
+          "detail_message": {
+            "title": "detail_message",
+            "type": "string"
+          },
+          "results": {
+            "title": "results",
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

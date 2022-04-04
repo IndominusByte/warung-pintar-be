@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+  warungpintar-go-transaction-production:
+    container_name: ${BACKEND_CONTAINER}
+    hostname: ${BACKEND_HOST}
+    image: "${BACKEND_IMAGE}:${BACKEND_IMAGE_TAG}"
+    restart: always
+    environment:
+      BACKEND_STAGE: ${BACKEND_STAGE}
+    ports:
+      - "3002:3002"
+    networks:
+      - warungpintar-environment-production
+
+networks:
+  warungpintar-environment-production:
+    external: true
+    name: warungpintar-environment-production
