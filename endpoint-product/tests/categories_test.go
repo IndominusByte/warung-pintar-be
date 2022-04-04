@@ -18,11 +18,11 @@ import (
 )
 
 const (
-	prefix  = "/categories"
-	email   = "testtestingtest@test.com"
-	email_2 = "testtestingtest2@test.com"
-	namee   = "test"
-	namee_2 = "test2"
+	prefixCategory = "/categories"
+	email          = "testtestingtest@test.com"
+	email_2        = "testtestingtest2@test.com"
+	namee          = "test"
+	namee_2        = "test2"
 )
 
 var (
@@ -31,7 +31,7 @@ var (
 	tokenNotFound = ""
 )
 
-func TestUp(t *testing.T) {
+func TestUpCategory(t *testing.T) {
 	repo, _ := setupEnvironment()
 	cfg, _ := config.New()
 	// create admin
@@ -55,7 +55,7 @@ func TestUp(t *testing.T) {
 	tokenNotFound = auth.NewJwtTokenRSA(cfg.JWT.PublicKey, cfg.JWT.PrivateKey, cfg.JWT.Algorithm, token)
 }
 
-func TestValidationCreate(t *testing.T) {
+func TestValidationCreateCategory(t *testing.T) {
 	_, s := setupEnvironment()
 
 	var data map[string]interface{}
@@ -85,7 +85,7 @@ func TestValidationCreate(t *testing.T) {
 				panic(err)
 			}
 
-			req, _ := http.NewRequest(http.MethodPost, prefix, bytes.NewBuffer(body))
+			req, _ := http.NewRequest(http.MethodPost, prefixCategory, bytes.NewBuffer(body))
 			req.Header.Set("Content-Type", "application/json")
 			req.Header.Add("Authorization", "Bearer "+tokenAdmin)
 
@@ -108,7 +108,7 @@ func TestValidationCreate(t *testing.T) {
 
 }
 
-func TestCreate(t *testing.T) {
+func TestCreateCategory(t *testing.T) {
 	_, s := setupEnvironment()
 
 	var data map[string]interface{}
@@ -164,7 +164,7 @@ func TestCreate(t *testing.T) {
 				panic(err)
 			}
 
-			req, _ := http.NewRequest(http.MethodPost, prefix, bytes.NewBuffer(body))
+			req, _ := http.NewRequest(http.MethodPost, prefixCategory, bytes.NewBuffer(body))
 			req.Header.Set("Content-Type", "application/json")
 			req.Header.Add("Authorization", "Bearer "+test.token)
 
@@ -184,7 +184,7 @@ func TestCreate(t *testing.T) {
 	}
 }
 
-func TestValidationGetAllData(t *testing.T) {
+func TestValidationGetAllDataCategory(t *testing.T) {
 	_, s := setupEnvironment()
 
 	var data map[string]interface{}
@@ -195,19 +195,19 @@ func TestValidationGetAllData(t *testing.T) {
 	}{
 		{
 			name: "empty",
-			url:  prefix,
+			url:  prefixCategory,
 		},
 		{
 			name: "required",
-			url:  prefix + "?page=&per_page=&q=",
+			url:  prefixCategory + "?page=&per_page=&q=",
 		},
 		{
 			name: "type data",
-			url:  prefix + "?page=a&per_page=a&q=1",
+			url:  prefixCategory + "?page=a&per_page=a&q=1",
 		},
 		{
 			name: "minimum",
-			url:  prefix + "?page=-1&per_page=-1&q=",
+			url:  prefixCategory + "?page=-1&per_page=-1&q=",
 		},
 	}
 
@@ -236,12 +236,12 @@ func TestValidationGetAllData(t *testing.T) {
 	}
 }
 
-func TestGetAllData(t *testing.T) {
+func TestGetAllDataCategory(t *testing.T) {
 	_, s := setupEnvironment()
 
 	var data map[string]interface{}
 
-	req, _ := http.NewRequest(http.MethodGet, prefix+"?page=1&per_page=1&q=t", nil)
+	req, _ := http.NewRequest(http.MethodGet, prefixCategory+"?page=1&per_page=1&q=t", nil)
 
 	response := executeRequest(req, s)
 
@@ -252,7 +252,7 @@ func TestGetAllData(t *testing.T) {
 	assert.Equal(t, 200, response.Result().StatusCode)
 }
 
-func TestValidationGetById(t *testing.T) {
+func TestValidationGetByIdCategory(t *testing.T) {
 	_, s := setupEnvironment()
 
 	var data map[string]interface{}
@@ -263,11 +263,11 @@ func TestValidationGetById(t *testing.T) {
 	}{
 		{
 			name: "type data",
-			url:  prefix + "/abc",
+			url:  prefixCategory + "/abc",
 		},
 		{
 			name: "minimum",
-			url:  prefix + "/-1",
+			url:  prefixCategory + "/-1",
 		},
 	}
 
@@ -286,7 +286,7 @@ func TestValidationGetById(t *testing.T) {
 	}
 }
 
-func TestGetById(t *testing.T) {
+func TestGetByIdCategory(t *testing.T) {
 	repo, s := setupEnvironment()
 
 	var data map[string]interface{}
@@ -300,11 +300,11 @@ func TestGetById(t *testing.T) {
 	}{
 		{
 			name: "not found",
-			url:  prefix + "/99999999",
+			url:  prefixCategory + "/99999999",
 		},
 		{
 			name: "success",
-			url:  prefix + "/" + strconv.Itoa(category.Id),
+			url:  prefixCategory + "/" + strconv.Itoa(category.Id),
 		},
 	}
 
@@ -329,7 +329,7 @@ func TestGetById(t *testing.T) {
 	}
 }
 
-func TestValidationUpdate(t *testing.T) {
+func TestValidationUpdateCategory(t *testing.T) {
 	repo, s := setupEnvironment()
 
 	var data map[string]interface{}
@@ -362,7 +362,7 @@ func TestValidationUpdate(t *testing.T) {
 				panic(err)
 			}
 
-			req, _ := http.NewRequest(http.MethodPut, prefix+"/"+strconv.Itoa(category.Id), bytes.NewBuffer(body))
+			req, _ := http.NewRequest(http.MethodPut, prefixCategory+"/"+strconv.Itoa(category.Id), bytes.NewBuffer(body))
 			req.Header.Set("Content-Type", "application/json")
 			req.Header.Add("Authorization", "Bearer "+tokenAdmin)
 
@@ -384,7 +384,7 @@ func TestValidationUpdate(t *testing.T) {
 	}
 }
 
-func TestUpdate(t *testing.T) {
+func TestUpdateCategory(t *testing.T) {
 	repo, s := setupEnvironment()
 
 	var data map[string]interface{}
@@ -402,7 +402,7 @@ func TestUpdate(t *testing.T) {
 	}{
 		{
 			name:       "user not found",
-			url:        prefix + "/99999999",
+			url:        prefixCategory + "/99999999",
 			payload:    map[string]string{"name": namee},
 			expected:   "User not found.",
 			token:      tokenNotFound,
@@ -410,7 +410,7 @@ func TestUpdate(t *testing.T) {
 		},
 		{
 			name:       "user not admin",
-			url:        prefix + "/99999999",
+			url:        prefixCategory + "/99999999",
 			payload:    map[string]string{"name": namee},
 			expected:   "Only users with admin privileges can do this action.",
 			token:      tokenGuest,
@@ -418,7 +418,7 @@ func TestUpdate(t *testing.T) {
 		},
 		{
 			name:       "category not found",
-			url:        prefix + "/99999999",
+			url:        prefixCategory + "/99999999",
 			payload:    map[string]string{"name": namee},
 			expected:   "Category not found.",
 			token:      tokenAdmin,
@@ -426,7 +426,7 @@ func TestUpdate(t *testing.T) {
 		},
 		{
 			name:       "name already taken",
-			url:        prefix + "/" + strconv.Itoa(category.Id),
+			url:        prefixCategory + "/" + strconv.Itoa(category.Id),
 			payload:    map[string]string{"name": namee_2},
 			expected:   "The name has already been taken.",
 			token:      tokenAdmin,
@@ -434,7 +434,7 @@ func TestUpdate(t *testing.T) {
 		},
 		{
 			name:       "success",
-			url:        prefix + "/" + strconv.Itoa(category.Id),
+			url:        prefixCategory + "/" + strconv.Itoa(category.Id),
 			payload:    map[string]string{"name": namee},
 			expected:   "Successfully update the category.",
 			token:      tokenAdmin,
@@ -470,7 +470,7 @@ func TestUpdate(t *testing.T) {
 
 }
 
-func TestValidationDelete(t *testing.T) {
+func TestValidationDeleteCategory(t *testing.T) {
 	_, s := setupEnvironment()
 
 	var data map[string]interface{}
@@ -481,11 +481,11 @@ func TestValidationDelete(t *testing.T) {
 	}{
 		{
 			name: "type data",
-			url:  prefix + "/abc",
+			url:  prefixCategory + "/abc",
 		},
 		{
 			name: "minimum",
-			url:  prefix + "/-1",
+			url:  prefixCategory + "/-1",
 		},
 	}
 
@@ -504,7 +504,7 @@ func TestValidationDelete(t *testing.T) {
 	}
 }
 
-func TestDelete(t *testing.T) {
+func TestDeleteCategory(t *testing.T) {
 	repo, s := setupEnvironment()
 
 	var data map[string]interface{}
@@ -523,35 +523,35 @@ func TestDelete(t *testing.T) {
 		{
 			name:       "user not found",
 			expected:   "User not found.",
-			url:        prefix + "/99999999",
+			url:        prefixCategory + "/99999999",
 			token:      tokenNotFound,
 			statusCode: 401,
 		},
 		{
 			name:       "user not admin",
 			expected:   "Only users with admin privileges can do this action.",
-			url:        prefix + "/99999999",
+			url:        prefixCategory + "/99999999",
 			token:      tokenGuest,
 			statusCode: 401,
 		},
 		{
 			name:       "category not found",
 			expected:   "Category not found.",
-			url:        prefix + "/99999999",
+			url:        prefixCategory + "/99999999",
 			token:      tokenAdmin,
 			statusCode: 404,
 		},
 		{
 			name:       "success",
 			expected:   "Successfully delete the category.",
-			url:        prefix + "/" + strconv.Itoa(category.Id),
+			url:        prefixCategory + "/" + strconv.Itoa(category.Id),
 			token:      tokenAdmin,
 			statusCode: 200,
 		},
 		{
 			name:       "success",
 			expected:   "Successfully delete the category.",
-			url:        prefix + "/" + strconv.Itoa(category_2.Id),
+			url:        prefixCategory + "/" + strconv.Itoa(category_2.Id),
 			token:      tokenAdmin,
 			statusCode: 200,
 		},
@@ -580,7 +580,7 @@ func TestDelete(t *testing.T) {
 	}
 }
 
-func TestDown(t *testing.T) {
+func TestDownCategory(t *testing.T) {
 	repo, _ := setupEnvironment()
 
 	user, _ := repo.authRepo.GetUserByEmail(context.Background(), email)

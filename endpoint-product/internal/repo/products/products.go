@@ -58,6 +58,13 @@ func (r *RepoProducts) Validate() error {
 	return nil
 }
 
+func (r *RepoProducts) GetProductByName(ctx context.Context, name string) (*productsentity.Product, error) {
+	var t productsentity.Product
+	stmt, _ := r.db.PrepareNamedContext(ctx, r.queries["getProductByDynamic"]+" WHERE name = :name")
+
+	return &t, stmt.GetContext(ctx, &t, productsentity.Product{Name: name})
+}
+
 func (r *RepoProducts) GetProductBySlug(ctx context.Context, slug string) (*productsentity.Product, error) {
 	var t productsentity.Product
 	stmt, _ := r.db.PrepareNamedContext(ctx, r.queries["getProductByDynamic"]+" WHERE slug = :slug")

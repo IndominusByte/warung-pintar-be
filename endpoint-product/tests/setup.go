@@ -13,11 +13,13 @@ import (
 	handler_http "github.com/IndominusByte/warung-pintar-be/endpoint-product/internal/endpoint/http/handler"
 	authrepo "github.com/IndominusByte/warung-pintar-be/endpoint-product/internal/repo/auth"
 	categoriesrepo "github.com/IndominusByte/warung-pintar-be/endpoint-product/internal/repo/categories"
+	productsrepo "github.com/IndominusByte/warung-pintar-be/endpoint-product/internal/repo/products"
 )
 
 type setupRepo struct {
 	authRepo       authrepo.RepoAuth
 	categoriesRepo categoriesrepo.RepoCategories
+	productsRepo   productsrepo.RepoProducts
 }
 
 func setupEnvironment() (*setupRepo, *handler_http.Server) {
@@ -44,10 +46,12 @@ func setupEnvironment() (*setupRepo, *handler_http.Server) {
 	// you can insert your behaviors here
 	authRepo, _ := authrepo.New(db)
 	categoriesRepo, _ := categoriesrepo.New(db)
+	productsRepo, _ := productsrepo.New(db)
 
 	setuprepo := setupRepo{
 		authRepo:       *authRepo,
 		categoriesRepo: *categoriesRepo,
+		productsRepo:   *productsRepo,
 	}
 
 	return &setuprepo, r
