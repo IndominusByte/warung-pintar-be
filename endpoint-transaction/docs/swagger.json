@@ -483,6 +483,194 @@
             "AccessToken": []
           }
         ]
+      },
+      "get": {
+        "tags": ["orders"],
+        "summary": "Get All Order User For Admin",
+        "description": "",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Page",
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Per Page",
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            "name": "per_page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Status",
+              "enum": [
+                "ongoing",
+                "reject",
+                "on the way",
+                "success"
+              ],
+              "type": "string"
+            },
+            "name": "status",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 200,
+                  "status": true,
+                  "message": "Request Success.",
+                  "detail_message": null,
+                  "results": {
+                    "data": [
+                    ],
+                    "total": 0,
+                    "next_num": null,
+                    "prev_num": null,
+                    "page": 1,
+                    "iter_pages": []
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 422,
+                  "status": false,
+                  "message": "Unprocessable Entity.",
+                  "detail_message": {
+                    "_body": "Invalid input type."
+                  },
+                  "data": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/orders/mine": {
+      "get": {
+        "tags": ["orders"],
+        "summary": "Get All Order User",
+        "description": "",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Page",
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Per Page",
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            "name": "per_page",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Status",
+              "enum": [
+                "ongoing",
+                "reject",
+                "on the way",
+                "success"
+              ],
+              "type": "string"
+            },
+            "name": "status",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 200,
+                  "status": true,
+                  "message": "Request Success.",
+                  "detail_message": null,
+                  "results": {
+                    "data": [
+                    ],
+                    "total": 0,
+                    "next_num": null,
+                    "prev_num": null,
+                    "page": 1,
+                    "iter_pages": []
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 422,
+                  "status": false,
+                  "message": "Unprocessable Entity.",
+                  "detail_message": {
+                    "_body": "Invalid input type."
+                  },
+                  "data": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ]
       }
     },
     "/orders/set-reject/{order_id}": {

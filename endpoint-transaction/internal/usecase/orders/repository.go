@@ -14,6 +14,9 @@ type ordersRepo interface {
 	UpdateOrder(ctx context.Context, payload *ordersentity.Order) error
 	Insert(ctx context.Context, payload *ordersentity.FormCreateSchema) int
 	InsertItem(ctx context.Context, payload *ordersentity.OrderItem) int
+	GetAllOrderPaginate(ctx context.Context,
+		payload *ordersentity.QueryParamAllOrderSchema, isAdmin bool) (*ordersentity.OrderPaginate, error)
+	GetAllOrderItems(ctx context.Context, orderId int) ([]ordersentity.OrderItemProduct, error)
 }
 
 type authRepo interface {

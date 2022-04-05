@@ -20,6 +20,8 @@ type ordersUsecaseIface interface {
 	SetReject(ctx context.Context, rw http.ResponseWriter, orderId int)
 	SetSuccess(ctx context.Context, rw http.ResponseWriter, orderId int)
 	SetOnTheWay(ctx context.Context, rw http.ResponseWriter, orderId int, file *multipart.Form)
+	GetMine(ctx context.Context, rw http.ResponseWriter, payload *ordersentity.QueryParamAllOrderSchema)
+	GetAllOrder(ctx context.Context, rw http.ResponseWriter, payload *ordersentity.QueryParamAllOrderSchema)
 }
 
 func AddOrders(r *chi.Mux, uc ordersUsecaseIface, redisCli *redis.Pool) {
@@ -78,6 +80,30 @@ func AddOrders(r *chi.Mux, uc ordersUsecaseIface, redisCli *redis.Pool) {
 				orderId, _ := parser.ParsePathToInt("/orders/set-success/(.*)", r.URL.Path)
 
 				uc.SetSuccess(r.Context(), rw, orderId)
+			})
+			r.Get("/mine", func(rw http.ResponseWriter, r *http.Request) {
+				var p ordersentity.QueryParamAllOrderSchema
+
+				if err := validation.ParseRequest(&p, r.URL.Query()); err != nil {
+					response.WriteJSONResponse(rw, 422, nil, map[string]interface{}{
+						constant.Body: constant.FailedParseBody,
+					})
+					return
+				}
+
+				uc.GetMine(r.Context(), rw, &p)
+			})
+			r.Get("/", func(rw http.ResponseWriter, r *http.Request) {
+				var p ordersentity.QueryParamAllOrderSchema
+
+				if err := validation.ParseRequest(&p, r.URL.Query()); err != nil {
+					response.WriteJSONResponse(rw, 422, nil, map[string]interface{}{
+						constant.Body: constant.FailedParseBody,
+					})
+					return
+				}
+
+				uc.GetAllOrder(r.Context(), rw, &p)
 			})
 		})
 		// public route

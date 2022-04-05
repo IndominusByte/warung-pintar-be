@@ -2,8 +2,10 @@ package orders
 
 import (
 	"context"
+	"fmt"
 
 	ordersentity "github.com/IndominusByte/warung-pintar-be/endpoint-transaction/internal/entity/orders"
+	"github.com/creent-production/cdk-go/pagination"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -95,4 +97,74 @@ func (r *RepoOrders) UpdateOrder(ctx context.Context, payload *ordersentity.Orde
 		return err
 	}
 	return nil
+}
+
+func (r *RepoOrders) GetAllOrderPaginate(ctx context.Context,
+	payload *ordersentity.QueryParamAllOrderSchema, isAdmin bool) (*ordersentity.OrderPaginate, error) {
+
+	var results ordersentity.OrderPaginate
+
+	query := r.queries["getOrderByDynamic"] + " WHERE 1=1"
+	if !isAdmin {
+		query += ` AND user_id = :user_id`
+	}
+	if len(payload.Status) > 0 {
+		query += ` AND status = :status`
+	}
+	query += ` ORDER BY id DESC`
+
+	// pagination
+	var count struct{ Total int }
+	stmt_count, _ := r.db.PrepareNamedContext(ctx, fmt.Sprintf("SELECT count(*) AS total FROM (%s) AS anon_1", query))
+	err := stmt_count.GetContext(ctx, &count, payload)
+	if err != nil {
+		return &results, err
+	}
+	payload.Offset = (payload.Page - 1) * payload.PerPage
+
+	// results
+	query += ` LIMIT :per_page OFFSET :offset`
+	stmt, _ := r.db.PrepareNamedContext(ctx, query)
+	err = stmt.SelectContext(ctx, &results.Data, payload)
+	if err != nil {
+		return &results, err
+	}
+
+	paginate := pagination.Paginate{Page: payload.Page, PerPage: payload.PerPage, Total: count.Total}
+	results.Total = paginate.Total
+	results.NextNum = paginate.NextNum()
+	results.PrevNum = paginate.PrevNum()
+	results.Page = paginate.Page
+	results.IterPages = paginate.IterPages()
+
+	return &results, nil
+}
+
+func (r *RepoOrders) GetAllOrderItems(ctx context.Context, orderId int) ([]ordersentity.OrderItemProduct, error) {
+	var results []ordersentity.OrderItemProduct
+
+	query := `
+	SELECT
+	transaction.order_items.id as order_items_id,
+	transaction.order_items.notes as order_items_notes,
+	transaction.order_items.qty as order_items_qty,
+	transaction.order_items.price as order_items_price,
+	transaction.order_items.product_id as order_items_product_id,
+	transaction.order_items.created_at as order_items_created_at,
+	transaction.order_items.updated_at as order_items_updated_at,
+	product.products.name as product_name,
+	product.products.slug as product_slug,
+	product.products.image as product_image
+FROM transaction.order_items
+INNER JOIN product.products ON product.products.id = transaction.order_items.product_id
+WHERE transaction.order_items.order_id = :order_id ORDER BY transaction.order_items.id DESC
+	`
+
+	stmt, _ := r.db.PrepareNamedContext(ctx, query)
+	err := stmt.SelectContext(ctx, &results, ordersentity.OrderItem{OrderId: orderId})
+	if err != nil {
+		return results, err
+	}
+
+	return results, nil
 }

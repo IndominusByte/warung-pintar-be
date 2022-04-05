@@ -261,3 +261,65 @@ func (uc *OrdersUsecase) SetSuccess(ctx context.Context, rw http.ResponseWriter,
 		constant.App: "Successfully set the order to success.",
 	})
 }
+
+func (uc *OrdersUsecase) GetMine(ctx context.Context, rw http.ResponseWriter, payload *ordersentity.QueryParamAllOrderSchema) {
+	if err := validation.StructValidate(payload); err != nil {
+		response.WriteJSONResponse(rw, 422, nil, err)
+		return
+	}
+
+	_, claims, _ := jwtauth.FromContext(ctx)
+	sub, _ := strconv.Atoi(claims["sub"].(string))
+
+	user, err := uc.authRepo.GetUserById(ctx, sub)
+	if err != nil {
+		response.WriteJSONResponse(rw, 401, nil, map[string]interface{}{
+			constant.Header: constant.UserNotFound,
+		})
+		return
+	}
+
+	payload.UserId = user.Id
+	results, _ := uc.ordersRepo.GetAllOrderPaginate(ctx, payload, false)
+
+	for i := 0; i < len(results.Data); i++ {
+		orderItems, _ := uc.ordersRepo.GetAllOrderItems(ctx, results.Data[i].Id)
+		results.Data[i].OrderItems = orderItems
+	}
+
+	response.WriteJSONResponse(rw, 200, results, nil)
+}
+
+func (uc *OrdersUsecase) GetAllOrder(ctx context.Context, rw http.ResponseWriter, payload *ordersentity.QueryParamAllOrderSchema) {
+	if err := validation.StructValidate(payload); err != nil {
+		response.WriteJSONResponse(rw, 422, nil, err)
+		return
+	}
+
+	_, claims, _ := jwtauth.FromContext(ctx)
+	sub, _ := strconv.Atoi(claims["sub"].(string))
+
+	user, err := uc.authRepo.GetUserById(ctx, sub)
+	if err != nil {
+		response.WriteJSONResponse(rw, 401, nil, map[string]interface{}{
+			constant.Header: constant.UserNotFound,
+		})
+		return
+	}
+
+	if user.Role != "admin" {
+		response.WriteJSONResponse(rw, 401, nil, map[string]interface{}{
+			constant.Header: fmt.Sprintf(constant.PrivilegesOnly, "admin"),
+		})
+		return
+	}
+
+	results, _ := uc.ordersRepo.GetAllOrderPaginate(ctx, payload, true)
+
+	for i := 0; i < len(results.Data); i++ {
+		orderItems, _ := uc.ordersRepo.GetAllOrderItems(ctx, results.Data[i].Id)
+		results.Data[i].OrderItems = orderItems
+	}
+
+	response.WriteJSONResponse(rw, 200, results, nil)
+}
