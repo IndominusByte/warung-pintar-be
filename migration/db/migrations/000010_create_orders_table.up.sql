@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS transaction.orders(
+  id SERIAL PRIMARY KEY,
+  fullname VARCHAR(100) NOT NULL, 
+  phone VARCHAR(20) NOT NULl,
+  address TEXT NOT NULL,
+  proof_of_payment VARCHAR(100) NOT NULL,
+  status VARCHAR(20) DEFAULT 'ongoing',
+  no_receipt VARCHAR(100),
+  total_amount BIGINT NOT NULL,
+  user_id INT NOT NULL,
+  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);

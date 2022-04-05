@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/IndominusByte/magicimage"
+	"github.com/creent-production/cdk-go/magicimage"
 	"github.com/IndominusByte/warung-pintar-be/endpoint-auth/internal/config"
 	"github.com/creent-production/cdk-go/auth"
 	"github.com/go-chi/jwtauth"

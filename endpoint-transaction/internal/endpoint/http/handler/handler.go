@@ -8,8 +8,10 @@ import (
 	endpoint_http "github.com/IndominusByte/warung-pintar-be/endpoint-transaction/internal/endpoint/http"
 	authrepo "github.com/IndominusByte/warung-pintar-be/endpoint-transaction/internal/repo/auth"
 	cartsrepo "github.com/IndominusByte/warung-pintar-be/endpoint-transaction/internal/repo/carts"
+	ordersrepo "github.com/IndominusByte/warung-pintar-be/endpoint-transaction/internal/repo/orders"
 	productsrepo "github.com/IndominusByte/warung-pintar-be/endpoint-transaction/internal/repo/products"
 	cartsusecase "github.com/IndominusByte/warung-pintar-be/endpoint-transaction/internal/usecase/carts"
+	ordersusecase "github.com/IndominusByte/warung-pintar-be/endpoint-transaction/internal/usecase/orders"
 	"github.com/creent-production/cdk-go/auth"
 	"github.com/creent-production/cdk-go/filestatic"
 	"github.com/go-chi/chi/v5"
@@ -77,6 +79,13 @@ func (s *Server) MountHandlers() error {
 	}
 	cartsUsecase := cartsusecase.NewCartsUsecase(cartsRepo, authRepo, productsRepo)
 	endpoint_http.AddCarts(s.Router, cartsUsecase, s.redisCli)
+
+	ordersRepo, err := ordersrepo.New(s.db)
+	if err != nil {
+		return err
+	}
+	ordersUsecase := ordersusecase.NewOrdersUsecase(ordersRepo, authRepo, cartsRepo)
+	endpoint_http.AddOrders(s.Router, ordersUsecase, s.redisCli)
 
 	return nil
 }

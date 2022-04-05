@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/IndominusByte/magicimage"
+	"github.com/creent-production/cdk-go/magicimage"
 	"github.com/IndominusByte/warung-pintar-be/endpoint-auth/internal/config"
 	"github.com/IndominusByte/warung-pintar-be/endpoint-auth/internal/constant"
 	authentity "github.com/IndominusByte/warung-pintar-be/endpoint-auth/internal/entity/auth"

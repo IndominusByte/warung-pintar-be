@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/IndominusByte/magicimage"
+	"github.com/creent-production/cdk-go/magicimage"
 	"github.com/IndominusByte/warung-pintar-be/endpoint-product/internal/constant"
 	productsentity "github.com/IndominusByte/warung-pintar-be/endpoint-product/internal/entity/products"
 	"github.com/creent-production/cdk-go/response"

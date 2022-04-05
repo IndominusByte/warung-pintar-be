@@ -384,7 +384,423 @@
           }
         ]
       }
-    }
+    },
+    "/orders": {
+      "post": {
+        "tags": ["orders"],
+        "summary": "Create Order",
+        "description": "",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schema/OrderCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Request Created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 201,
+                  "status": true,
+                  "message": "Request Created.",
+                  "detail_message": {
+                    "_app": "Successfully save the order."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation Failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 400,
+                  "status": false,
+                  "message": "Validation Failed.",
+                  "detail_message": {
+                    "_app": "Available stock: 1, please reduce quantity product 'test'"
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 404,
+                  "status": false,
+                  "message": "Resource Not Found.",
+                  "detail_message": {
+                    "_app": "Ups, item in payment not found."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 422,
+                  "status": false,
+                  "message": "Unprocessable Entity.",
+                  "detail_message": {
+                    "_body": "Invalid input type."
+                  },
+                  "data": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/orders/set-reject/{order_id}": {
+      "put": {
+        "tags": ["orders"],
+        "summary": "Set order to reject",
+        "description": "",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Order Id",
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            "name": "order_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 200,
+                  "status": true,
+                  "message": "Request Success.",
+                  "detail_message": {
+                    "_app": "Successfully set the order to reject."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation Failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 400,
+                  "status": false,
+                  "message": "Validation Failed.",
+                  "detail_message": {
+                    "_app": "Cannot change status rejected if status other than ongoing."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 404,
+                  "status": false,
+                  "message": "Resource Not Found.",
+                  "detail_message": {
+                    "_app": "Order not found."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 422,
+                  "status": false,
+                  "message": "Unprocessable Entity.",
+                  "detail_message": {
+                    "_body": "Invalid input type."
+                  },
+                  "data": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/orders/set-on-the-way/{order_id}": {
+      "put": {
+        "tags": ["orders"],
+        "summary": "Set order to on the way",
+        "description": "",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Order Id",
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            "name": "order_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schema/OrderUpdateOnTheWay"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Request Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 200,
+                  "status": true,
+                  "message": "Request Success.",
+                  "detail_message": {
+                    "_app": "Successfully set the order to on the way."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation Failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 400,
+                  "status": false,
+                  "message": "Validation Failed.",
+                  "detail_message": {
+                    "_app": "Cannot change status on the way if status other than ongoing."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 404,
+                  "status": false,
+                  "message": "Resource Not Found.",
+                  "detail_message": {
+                    "_app": "Order not found."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 422,
+                  "status": false,
+                  "message": "Unprocessable Entity.",
+                  "detail_message": {
+                    "_body": "Invalid input type."
+                  },
+                  "data": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/orders/set-success/{order_id}": {
+      "put": {
+        "tags": ["orders"],
+        "summary": "Set order to success",
+        "description": "",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Order Id",
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            "name": "order_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 200,
+                  "status": true,
+                  "message": "Request Success.",
+                  "detail_message": {
+                    "_app": "Successfully set the order to success."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User doesn't have this order or order status not on the way",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 400,
+                  "status": false,
+                  "message": "Validation Failed.",
+                  "detail_message": {
+                    "_app": "string"
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 404,
+                  "status": false,
+                  "message": "Resource Not Found.",
+                  "detail_message": {
+                    "_app": "Order not found."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 422,
+                  "status": false,
+                  "message": "Unprocessable Entity.",
+                  "detail_message": {
+                    "_body": "Invalid input type."
+                  },
+                  "data": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ]
+      }
+    },
   },
   "components": {
     "securitySchemes": {
@@ -467,6 +883,47 @@
             "title": "qty",
             "exclusiveMinimum": 1,
             "type": "integer"
+          }
+        }
+      },
+      "OrderCreate": {
+        "title": "OrderCreate",
+        "required": ["fullname", "phone", "address", "proof_of_payment"],
+        "type": "object",
+        "properties": {
+          "fullname": {
+            "title": "fullname",
+            "maxLength": 100,
+            "minLength": 3,
+            "type": "string"
+          },
+          "phone": {
+            "title": "phone",
+            "minLength": 3,
+            "maxLength": 20,
+            "type": "string"
+          },
+          "address": {
+            "title": "address",
+            "minLength": 5,
+            "type": "string"
+          },
+          "proof_of_payment": {
+            "title": "proof_of_payment",
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "OrderUpdateOnTheWay": {
+        "title": "OrderUpdateOnTheWay",
+        "required": ["no_receipt"],
+        "type": "object",
+        "properties": {
+          "no_receipt": {
+            "title": "no_receipt",
+            "type": "string",
+            "format": "binary"
           }
         }
       }

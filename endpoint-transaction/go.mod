@@ -21,7 +21,9 @@ require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/PuerkitoBio/purell v1.1.1 // indirect
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
+	github.com/corona10/goimagehash v1.0.3 // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.0-20210816181553-5444fa50b93d // indirect
+	github.com/disintegration/imaging v1.6.2 // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
 	github.com/go-openapi/jsonreference v0.19.6 // indirect
 	github.com/go-openapi/spec v0.20.4 // indirect
@@ -41,8 +43,11 @@ require (
 	github.com/lestrrat-go/jwx v1.2.18 // indirect
 	github.com/lestrrat-go/option v1.0.0 // indirect
 	github.com/mailru/easyjson v0.7.6 // indirect
+	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/rwcarlsen/goexif v0.0.0-20190401172101-9e8deecbddbd // indirect
 	github.com/swaggo/files v0.0.0-20210815190702-a29dd2bc99b2 // indirect
+	golang.org/x/image v0.0.0-20191009234506-e7c1f5e7dbb8 // indirect
 	golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2 // indirect
 	golang.org/x/sys v0.0.0-20210809222454-d867a43fc93e // indirect
 	golang.org/x/text v0.3.7 // indirect

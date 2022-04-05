@@ -3,12 +3,12 @@ module github.com/IndominusByte/warung-pintar-be/endpoint-product
 go 1.17
 
 require (
-	github.com/IndominusByte/magicimage v0.3.0
 	github.com/creent-production/cdk-go v1.1.4
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-chi/cors v1.2.0
 	github.com/go-chi/jwtauth v1.2.0
 	github.com/gomodule/redigo v1.8.8
+	github.com/gosimple/slug v1.12.0
 	github.com/jmoiron/sqlx v1.3.4
 	github.com/lib/pq v1.10.4
 	github.com/stretchr/testify v1.7.0
@@ -37,7 +37,6 @@ require (
 	github.com/goccy/go-json v0.9.4 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/schema v1.2.0 // indirect
-	github.com/gosimple/slug v1.12.0 // indirect
 	github.com/gosimple/unidecode v1.0.1 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
