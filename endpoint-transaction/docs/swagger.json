@@ -8,7 +8,7 @@
   "paths": {
     "/carts/put-product": {
       "post": {
-        "tags": ["products"],
+        "tags": ["carts"],
         "summary": "Put To Cart",
         "description": "",
         "requestBody": {
@@ -124,6 +124,266 @@
           }
         ]
       }
+    },
+    "/carts": {
+      "get": {
+        "tags": ["carts"],
+        "summary": "Get All Cart",
+        "description": "",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "stock",
+              "enum": ["ready", "empty"],
+              "type": "string"
+            },
+            "name": "stock",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 200,
+                  "status": true,
+                  "message": "Request Success.",
+                  "detail_message": null,
+                  "results": [
+                    {
+                      "cart_id": 1,
+                      "cart_notes": "string",
+                      "cart_qty": 1,
+                      "cart_user_id": 1,
+                      "cart_product_id": 1,
+                      "product_name": "string",
+                      "product_slug": "string",
+                      "product_image": "string",
+                      "product_price": 1,
+                      "product_stock": 1                
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 422,
+                  "status": false,
+                  "message": "Unprocessable Entity.",
+                  "detail_message": {
+                    "_body": "Invalid input type."
+                  },
+                  "data": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["carts"],
+        "summary": "Delete Cart",
+        "description": "",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/DynamicMultiple"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Request Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 200,
+                  "status": true,
+                  "message": "Request Success.",
+                  "detail_message": {
+                    "_app": "1 items were removed."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 422,
+                  "status": false,
+                  "message": "Unprocessable Entity.",
+                  "detail_message": {
+                    "_body": "Invalid input type."
+                  },
+                  "data": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/carts/move-to-payment": {
+      "post": {
+        "tags": ["carts"],
+        "summary": "Save into redis selected cart for payment page",
+        "description": "",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/DynamicMultiple"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Request Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 200,
+                  "status": true,
+                  "message": "Request Success.",
+                  "detail_message": {
+                    "_app": "1 items successfully moved to the payment."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 422,
+                  "status": false,
+                  "message": "Unprocessable Entity.",
+                  "detail_message": {
+                    "_body": "Invalid input type."
+                  },
+                  "data": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ]
+      }
+    },
+    "/carts/item-in-payment": {
+      "get": {
+        "tags": ["carts"],
+        "summary": "Get item in payment",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Request Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 200,
+                  "status": true,
+                  "message": "Request Success.",
+                  "detail_message": null,
+                  "results": [
+                    {
+                      "cart_id": 1,
+                      "cart_notes": "string",
+                      "cart_qty": 1,
+                      "cart_user_id": 1,
+                      "cart_product_id": 1,
+                      "product_name": "string",
+                      "product_slug": "string",
+                      "product_image": "string",
+                      "product_price": 1,
+                      "product_stock": 1                
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 422,
+                  "status": false,
+                  "message": "Unprocessable Entity.",
+                  "detail_message": {
+                    "_body": "Invalid input type."
+                  },
+                  "data": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -164,6 +424,21 @@
           "results": {
             "title": "results",
             "type": "object"
+          }
+        }
+      },
+      "DynamicMultiple": {
+        "title": "DynamicMultiple",
+        "required": ["list_id"],
+        "type": "object",
+        "properties": {
+          "list_id": {
+            "title": "List Id",
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
           }
         }
       },
