@@ -6,7 +6,125 @@
     "version": "1.0.0"
   },
   "paths": {
-
+    "/carts/put-product": {
+      "post": {
+        "tags": ["products"],
+        "summary": "Put To Cart",
+        "description": "",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/CartCreateUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Request Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 200,
+                  "status": true,
+                  "message": "Request Success.",
+                  "detail_message": {
+                    "_app": "Shopping cart successfully updated."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Request Created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 201,
+                  "status": true,
+                  "message": "Request Created.",
+                  "detail_message": {
+                    "_app": "The product has been successfully added to the shopping cart."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Qty exceed than stock.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 400,
+                  "status": false,
+                  "message": "Validation Failed.",
+                  "detail_message": {
+                    "_app": "string"
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 404,
+                  "status": false,
+                  "message": "Resource Not Found.",
+                  "detail_message": {
+                    "_app": "Product not found."
+                  },
+                  "results": null
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schema/ExampleResponse"
+                },
+                "example": {
+                  "status_code": 422,
+                  "status": false,
+                  "message": "Unprocessable Entity.",
+                  "detail_message": {
+                    "_body": "Invalid input type."
+                  },
+                  "data": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "AccessToken": []
+          }
+        ]
+      }
+    }
   },
   "components": {
     "securitySchemes": {
@@ -46,6 +164,34 @@
           "results": {
             "title": "results",
             "type": "object"
+          }
+        }
+      },
+      "CartCreateUpdate": {
+        "title": "CartCreateUpdate",
+        "required": ["operation", "product_id", "qty"],
+        "type": "object",
+        "properties": {
+          "operation": {
+            "title": "operation",
+            "enum": ["create","update"],
+            "type": "string"
+          },
+          "product_id": {
+            "title": "product_id",
+            "exclusiveMinimum": 1,
+            "type": "integer"
+          },
+          "notes": {
+            "title": "notes",
+            "maxLength": 100,
+            "minLength": 3,
+            "type": "string"
+          },
+          "qty": {
+            "title": "qty",
+            "exclusiveMinimum": 1,
+            "type": "integer"
           }
         }
       }

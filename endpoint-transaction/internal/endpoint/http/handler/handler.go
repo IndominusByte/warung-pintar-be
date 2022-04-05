@@ -8,6 +8,7 @@ import (
 	endpoint_http "github.com/IndominusByte/warung-pintar-be/endpoint-transaction/internal/endpoint/http"
 	authrepo "github.com/IndominusByte/warung-pintar-be/endpoint-transaction/internal/repo/auth"
 	cartsrepo "github.com/IndominusByte/warung-pintar-be/endpoint-transaction/internal/repo/carts"
+	productsrepo "github.com/IndominusByte/warung-pintar-be/endpoint-transaction/internal/repo/products"
 	cartsusecase "github.com/IndominusByte/warung-pintar-be/endpoint-transaction/internal/usecase/carts"
 	"github.com/creent-production/cdk-go/auth"
 	"github.com/creent-production/cdk-go/filestatic"
@@ -65,11 +66,16 @@ func (s *Server) MountHandlers() error {
 		return err
 	}
 
+	productsRepo, err := productsrepo.New(s.db)
+	if err != nil {
+		return err
+	}
+
 	cartsRepo, err := cartsrepo.New(s.db)
 	if err != nil {
 		return err
 	}
-	cartsUsecase := cartsusecase.NewCartsUsecase(cartsRepo, authRepo)
+	cartsUsecase := cartsusecase.NewCartsUsecase(cartsRepo, authRepo, productsRepo)
 	endpoint_http.AddCarts(s.Router, cartsUsecase, s.redisCli)
 
 	return nil
