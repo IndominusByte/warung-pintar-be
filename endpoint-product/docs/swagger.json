@@ -793,7 +793,7 @@
                   "status": true,
                   "message": "Request Success.",
                   "detail_message": {
-                    "_app": "Successfully delete the product."
+                    "_app": "Successfully update the product."
                   },
                   "results": null
                 }

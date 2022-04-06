@@ -17,7 +17,10 @@ type RepoProducts struct {
 var queries = map[string]string{
 	"getProductByDynamic": `SELECT id, name, slug, description, image, price, stock, category_id, created_at, updated_at FROM product.products`,
 }
-var execs = map[string]string{}
+var execs = map[string]string{
+	"insertProduct": `INSERT INTO product.products (name, slug, description, image, price, stock, category_id) VALUES (:name, :slug, :description, :image, :price, :stock, :category_id) RETURNING id`,
+	"deleteProduct": `DELETE FROM product.products WHERE id = :id`,
+}
 
 func New(db *sqlx.DB) (*RepoProducts, error) {
 	rp := &RepoProducts{
@@ -53,9 +56,33 @@ func (r *RepoProducts) Validate() error {
 	return nil
 }
 
+func (r *RepoProducts) GetProductByName(ctx context.Context, name string) (*productsentity.Product, error) {
+	var t productsentity.Product
+	stmt, _ := r.db.PrepareNamedContext(ctx, r.queries["getProductByDynamic"]+" WHERE name = :name")
+
+	return &t, stmt.GetContext(ctx, &t, productsentity.Product{Name: name})
+}
+
 func (r *RepoProducts) GetProductById(ctx context.Context, id int) (*productsentity.Product, error) {
 	var t productsentity.Product
 	stmt, _ := r.db.PrepareNamedContext(ctx, r.queries["getProductByDynamic"]+" WHERE id = :id")
 
 	return &t, stmt.GetContext(ctx, &t, productsentity.Product{Id: id})
+}
+
+func (r *RepoProducts) Insert(ctx context.Context, payload *productsentity.FormCreateUpdateSchema) int {
+	var id int
+	stmt, _ := r.db.PrepareNamedContext(ctx, r.execs["insertProduct"])
+	stmt.QueryRowxContext(ctx, payload).Scan(&id)
+
+	return id
+}
+
+func (r *RepoProducts) Delete(ctx context.Context, productId int) error {
+	stmt, _ := r.db.PrepareNamedContext(ctx, r.execs["deleteProduct"])
+	_, err := stmt.ExecContext(ctx, productsentity.Product{Id: productId})
+	if err != nil {
+		return err
+	}
+	return nil
 }

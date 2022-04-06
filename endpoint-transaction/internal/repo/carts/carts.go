@@ -149,6 +149,17 @@ func (r *RepoCarts) Delete(ctx context.Context, payload *cartsentity.JsonMultipl
 	return nil
 }
 
+func (r *RepoCarts) DeleteByUserId(ctx context.Context, userId int) error {
+	query := r.execs["deleteCart"]
+	stmt, _ := r.db.PrepareNamedContext(ctx, query)
+	_, err := stmt.ExecContext(ctx, cartsentity.JsonMultipleSchema{UserId: userId})
+	if err != nil {
+		return err
+	}
+	return nil
+
+}
+
 func (r *RepoCarts) MoveItemToPayment(ctx context.Context, redisCli *redis.Pool, payload *cartsentity.JsonMultipleSchema) {
 	var (
 		results []cartsentity.Cart

@@ -65,6 +65,13 @@ func (r *RepoOrders) GetOrderById(ctx context.Context, orderId int) (*ordersenti
 	return &t, stmt.GetContext(ctx, &t, ordersentity.Order{Id: orderId})
 }
 
+func (r *RepoOrders) GetOrderByUserIdLimit(ctx context.Context, userId int) (*ordersentity.Order, error) {
+	var t ordersentity.Order
+	stmt, _ := r.db.PrepareNamedContext(ctx, r.queries["getOrderByDynamic"]+" WHERE user_id = :user_id LIMIT 1")
+
+	return &t, stmt.GetContext(ctx, &t, ordersentity.Order{UserId: userId})
+}
+
 func (r *RepoOrders) Insert(ctx context.Context, payload *ordersentity.FormCreateSchema) int {
 	var id int
 	stmt, _ := r.db.PrepareNamedContext(ctx, r.execs["insertOrder"])
